@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Gallery</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background-color: #333;
+        color: white;
+      }
+
+      .navbar .nav-links {
+        display: flex;
+        gap: 20px;
+      }
+
+      .navbar .nav-links a {
+        color: white;
+        text-decoration: none;
+      }
+
+      .navbar .nav-links i {
+        margin-right: 5px;
+      }
+
+      .hamburger {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .nav-links.active {
+        display: block;
+      }
+
+      @media (max-width: 768px) {
+        .hamburger {
+          display: block;
+        }
+
+        .nav-links {
+          display: none;
+          flex-direction: column;
+          background-color: #333;
+          position: absolute;
+          top: 60px;
+          right: 0;
+          width: 200px;
+          text-align: right;
+          padding-right: 20px;
+        }
+      }
+
+      /* Gallery Grid */
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 2rem;
+      }
+
+      /* Image Card */
+      .image-card {
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .image-card:hover {
+        transform: scale(1.05);
+      }
+
+      .image-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+      }
+
+      .image-card .info {
+        padding: 1rem;
+      }
+
+      .image-card .info h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .image-card .info p {
+        font-size: 1rem;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      function Navbar() {
+        const [isOpen, setIsOpen] = React.useState(false);
+
+        const toggleMenu = () => {
+          setIsOpen(!isOpen);
+        };
+
+        return (
+          <nav className="navbar">
+            <h1>My Gallery</h1>
+            <div className="hamburger" onClick={toggleMenu}>
+              <i className="fas fa-bars"></i>
+            </div>
+            <div className={`nav-links ${isOpen ? 'active' : ''}`}>
+              <a href="#home"><i className="fas fa-home"></i> Home</a>
+              <a href="#gallery"><i className="fas fa-images"></i> Gallery</a>
+              <a href="#contact"><i className="fas fa-envelope"></i> Contact</a>
+              <a href="#about"><i className="fas fa-info-circle"></i> About</a>
+            </div>
+          </nav>
+        );
+      }
+
+      function ImageCard({ image, title, price }) {
+        return (
+          <div className="image-card">
+            <img src={image} alt={title} />
+            <div className="info">
+              <h3>{title}</h3>
+              <p>Price: ${price}</p>
+            </div>
+          </div>
+        );
+      }
+
+      function Gallery() {
+        const images = [
+          { id: 1, image: 'https://via.placeholder.com/200', title: 'Mountain View', price: 120 },
+          { id: 2, image: 'https://via.placeholder.com/200', title: 'Ocean Wave', price: 95 },
+          { id: 3, image: 'https://via.placeholder.com/200', title: 'City Lights', price: 150 },
+          { id: 4, image: 'https://via.placeholder.com/200', title: 'Desert Sunset', price: 180 },
+          { id: 5, image: 'https://via.placeholder.com/200', title: 'Forest Trail', price: 110 },
+        ];
+
+        return (
+          <div className="gallery">
+            {images.map((img) => (
+              <ImageCard key={img.id} image={img.image} title={img.title} price={img.price} />
+            ))}
+          </div>
+        );
+      }
+
+      function App() {
+        return (
+          <div>
+            <Navbar />
+            <Gallery />
+          </div>
+        );
+      }
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>

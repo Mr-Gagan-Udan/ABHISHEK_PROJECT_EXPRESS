@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>COMPONENTS IN REACT</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #495057;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .container {
+        max-width: 900px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      .highlight {
+        color: #a85ef0;
+      }
+      p {
+        font-size: 0.9rem;
+        color: #6c757d;
+      }
+      .pricing-table {
+        margin-top: 20px;
+        border-top: 1px solid #e0e0e0;
+      }
+      .plan {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+      .plan-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      .price {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+      .features {
+        font-size: 0.9rem;
+        color: #6c757d;
+      }
+      .features span {
+        margin-right: 10px;
+        color: #28a745;
+      }
+      .btn {
+        padding: 8px 16px;
+        background-color: #d6d8ff;
+        color: #6f42c1;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .btn:hover {
+        background-color: #c0b6f2;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      function Plan({ title, price, features }) {
+        return (
+          <div className="plan">
+            <div>
+              <h2 className="plan-title">{title}</h2>
+              <ul className="features">
+                {features.map((feature, index) => (
+                  <li key={index}>
+                    <span>✔</span> {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <div className="price">{price}</div>
+              <button className="btn">Get Started</button>
+            </div>
+          </div>
+        );
+      }
+
+      function PricingTable() {
+        return (
+          <div className="container">
+            <h1>
+              The Right Plan for <span className="highlight">Your Business</span>
+            </h1>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
+              quod in iure vero. Facilis magnam, sed officiis commodi labore odit.
+            </p>
+            <div className="pricing-table">
+              <Plan
+                title="Starter"
+                price="Free"
+                features={["1 lorem ipsum", "Lorem, ipsum dolor.", "Monthly Updates"]}
+              />
+              <Plan
+                title="Lorem Plus"
+                price="$32.00"
+                features={["1 lorem ipsum", "Lorem, ipsum dolor.", "Monthly Updates"]}
+              />
+              <Plan
+                title="Lorem Pro"
+                price="$50.00"
+                features={["1 lorem ipsum", "Lorem, ipsum dolor.", "Monthly Updates"]}
+              />
+            </div>
+          </div>
+        );
+      }
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<PricingTable />);
+    </script>
+  </body>
+</html>

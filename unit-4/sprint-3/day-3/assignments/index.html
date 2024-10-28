@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List with Pagination</title>
+    <style>
+        /* Add your styling here */
+        .todo-item {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="todo-list"></div>
+    <div class="pagination" id="pagination"></div>
+
+    <script>
+        const API_URL = 'https://jsonplaceholder.typicode.com/todos';
+        const ITEMS_PER_PAGE = 10;
+        let currentPage = 1;
+
+        // Function to fetch data from the API
+        async function fetchTodos(page) {
+            const response = await fetch(`${API_URL}?_page=${page}&_limit=${ITEMS_PER_PAGE}`);
+            const todos = await response.json();
+            return todos;
+        }
+
+        // Function to render todos to the DOM
+        function renderTodos(todos) {
+            const todoList = document.getElementById('todo-list');
+            todoList.innerHTML = '';
+            todos.forEach(todo => {
+                const todoItem = document.createElement('div');
+                todoItem.classList.add('todo-item');
+                todoItem.innerHTML = `
+                    <input type="checkbox" ${todo.completed ? 'checked' : ''}>
+                    <span>${todo.title}</span>
+                `;
+                todoList.appendChild(todoItem);
+            });
+        }
+
+        // Function to render pagination buttons
+        function renderPagination(totalItems) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.innerText = i;
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    updatePage();
+                });
+                pagination.appendChild(pageButton);
+            }
+        }
+
+        // Function to update the page
+        async function updatePage() {
+            const todos = await fetchTodos(currentPage);
+            renderTodos(todos);
+        }
+
+        // Initial load
+        async function init() {
+            const response = await fetch(API_URL);
+            const totalItems = response.headers.get('x-total-count');
+            renderPagination(totalItems);
+            updatePage();
+        }
+
+        init();
+    </script>
+</body>
+</html>

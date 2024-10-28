@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JSX and Babel</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        let a = "Seize the day"
+        //creatin the element using react
+        let p = React.createElement("p",null,a);//dynamically get the content
+        ReactDOM.render(p, document.getElementById("root"));
+
+
+
+        function Solve() {
+            const fl = true; 
+
+            return (
+                <div>
+                    {fl ? (
+                        <p>Welcome back! You are logged in.</p>
+                    ) : (
+                        <p>Please log in to continue.</p>
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<Solve />, document.getElementById('root'));
+
+    </script>
+  </body>
+</html>

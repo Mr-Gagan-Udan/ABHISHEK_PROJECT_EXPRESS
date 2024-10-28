@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Library Management System</h1>
+
+    <!-- Book Form -->
+    <div>
+        <h2>Add/Update Book</h2>
+        <form id="bookForm">
+            <input type="text" id="bookTitle" placeholder="Title" required>
+            <input type="text" id="bookAuthor" placeholder="Author" required>
+            <input type="text" id="bookGenre" placeholder="Genre" required>
+            <input type="text" id="bookPublishedDate" placeholder="Published Date" required>
+            <label>
+                <input type="checkbox" id="bookAvailability">
+                Available
+            </label>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Member Form -->
+    <div>
+        <h2>Add/Update Member</h2>
+        <form id="memberForm">
+            <input type="text" id="memberName" placeholder="Name" required>
+            <input type="date" id="membershipDate" required>
+            <label>
+                <input type="checkbox" id="memberActive">
+                Active
+            </label>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Books List -->
+    <div>
+        <h2>Books</h2>
+        <ul id="booksList"></ul>
+    </div>
+
+    <!-- Members List -->
+    <div>
+        <h2>Members</h2>
+        <ul id="membersList"></ul>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Gallery</title>
+  <style>
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      padding: 10px;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    function Gallery({ children }) {
+      return <div className="gallery">{children}</div>;
+    }
+
+    function Image({ src, alt }) {
+      return <img src={src} alt={alt} />;
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(
+      <Gallery>
+        <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBNCNvxV8Csq_RbQmfcv-I7bvaptBkvM2AIA&s" alt="Image 1" />
+        <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSeuyB4zGAfLbQL0zuFoMOn04HrnyGWYDRfxoKBqOza1g7EHr31P4rCki5UtgsX-FEyZU&usqp=CAU" alt="Image 2" />
+       
+      </Gallery>
+    );
+  </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>template</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f4f4f4;
+      }
+      .container {
+        width: 300px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .container h1 {
+        font-size: 24px;
+        text-align: center;
+      }
+      .input-group {
+        margin-bottom: 10px;
+      }
+      .input-group input {
+        width: 80%;
+        padding: 5px;
+        margin-right: 5px;
+      }
+      .input-group button {
+        padding: 5px;
+      }
+      .add-button {
+        display: block;
+        width: 100%;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .submit-button {
+        width: 100%;
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        margin-top: 20px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      function HobbiesForm() {
+        const [hobbies, setHobbies] = React.useState([""]);
+
+        const handleInputChange = (index, event) => {
+          const newHobbies = [...hobbies];
+          newHobbies[index] = event.target.value;
+          setHobbies(newHobbies);
+        };
+        const handleAddHobby = () => {
+          setHobbies([...hobbies, ""]);
+        };
+        const handleRemoveHobby = (index) => {
+          const newHobbies = [...hobbies];
+          newHobbies.splice(index, 1);
+          setHobbies(newHobbies);
+        };
+
+        const handleSubmit = (event) => {
+          event.preventDefault();
+          console.log("Hobbies:", hobbies);
+        };
+
+        return (
+          <div className="container">
+            <h1>Hobbies</h1>
+            <form onSubmit={handleSubmit}>
+              {hobbies.map((hobby, index) => (
+                <div key={index} className="input-group">
+                  <input
+                    type="text"
+                    value={hobby}
+                    onChange={(event) => handleInputChange(index, event)}
+                    placeholder={`Hobby ${index + 1}`}
+                    required
+                  />
+                  {hobbies.length > 1 && (
+                    <button type="button" onClick={() => handleRemoveHobby(index)}>
+                      Remove
+                    </button>
+                  )}
+                </div>
+              ))}
+              <button type="button" className="add-button" onClick={handleAddHobby}>
+                Add Hobby
+              </button>
+              <button type="submit" className="submit-button">
+                Submit
+              </button>
+            </form>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<HobbiesForm />);
+    </script>
+  </body>
+</html>

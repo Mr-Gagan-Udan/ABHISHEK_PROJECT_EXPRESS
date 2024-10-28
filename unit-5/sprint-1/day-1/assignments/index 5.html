@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JSX and Babel</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+
+      function Card(){
+        return (
+          <div style={styles.container}>
+            <img
+              src="https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-ferarcosn-190819.jpg&fm=jpg"
+              alt="Product"
+              style={styles.productImage}
+            />
+
+            <div style={styles.productInfo}>
+              <h1 style={styles.productTitle}>Automatic Watch</h1>
+              <h2 style={styles.productPrice}>$350.00 USD</h2>
+            </div>
+
+            <p style={styles.shortDescription}>
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+              nonumy eirmod tempor invidunt ut labore.
+            </p>
+
+            <p style={styles.longDescription}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ad
+              aliquid amet at delectus doloribus dolorem expedita hic, ipsum
+              maxime modi nam officiis porro, quae, quisquam quos reprehenderit
+              velit? Natus, totam.
+            </p>
+
+            <div style={styles.featuresSection}>
+              <h3 style={styles.featuresTitle}>FEATURES</h3>
+              <div style={styles.featuresList}>
+                <p>Chronograph</p>
+                <p>Master Chronometer Certified</p>
+                <p>Tachymeter</p>
+                <p>Anti-magnetic</p>
+                <p>Chronometer</p>
+                <p>Small seconds</p>
+              </div>
+            </div>
+
+            <div style={styles.detailsSection}>
+              <h3 style={styles.detailsTitle}>PRODUCT DETAILS</h3>
+              <p>
+                <strong>Between lugs:</strong> 20 mm
+              </p>
+              <p>
+                <strong>Bracelet:</strong> Leather strap
+              </p>
+              <p>
+                <strong>Case:</strong> Steel
+              </p>
+              <p>
+                <strong>Case diameter:</strong> 42 mm
+              </p>
+              <p>
+                <strong>Dial color:</strong> Black
+              </p>
+              <p>
+                <strong>Crystal:</strong> Domed, scratch-resistant sapphire
+                crystal with anti-reflective treatment inside
+              </p>
+              <p>
+                <strong>Water resistance:</strong> 5 bar (50 meters / 167 feet)
+              </p>
+            </div>
+
+            <button style={styles.addToCartButton}>ADD TO CART</button>
+          </div>
+        );
+      };
+
+      const styles = {
+        container: {
+          width: "700px",
+          margin: "20px auto",
+          padding: "20px",
+          backgroundColor: "#fff",
+          borderRadius: "8px",
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+        },
+        productImage: {
+          width: "100%",
+          borderRadius: "8px",
+        },
+        productInfo: {
+        //   textAlign: "center",
+          marginTop: "20px",
+        },
+        productTitle: {
+          fontSize: "24px",
+          fontWeight: "bold",
+        },
+        productPrice: {
+          fontSize: "20px",
+          color: "#666",
+        },
+        shortDescription: {
+        //   textAlign: "center",
+          color: "#888",
+        //   fontStyle: "italic",
+          marginTop: "10px",
+        },
+        longDescription: {
+          marginTop: "20px",
+          lineHeight: "1.5",
+          color: "#333",
+        },
+        featuresSection: {
+          marginTop: "30px",
+        },
+        featuresTitle: {
+          fontWeight: "bold",
+          color: "#f39c12",
+        },
+        featuresList: {
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: "10px",
+        },
+        detailsSection: {
+          marginTop: "30px",
+        },
+        detailsTitle: {
+          fontWeight: "bold",
+          color: "#f39c12",
+        },
+        addToCartButton: {
+          marginTop: "30px",
+          width: "100%",
+          padding: "15px",
+          fontSize: "16px",
+          backgroundColor: "#3498db",
+          color: "#fff",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer",
+        },
+      };
+      ReactDOM.render(<Card/>, document.getElementById("root"));
+    </script>
+  </body>
+</html>

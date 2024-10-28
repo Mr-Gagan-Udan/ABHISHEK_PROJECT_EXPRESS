@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> Evaluation Sprint-1</title>
+    <style>
+        body.light{
+            background-color: white;
+            color: black;
+        }
+
+        body.dark {
+            background-color: #333;
+            color: white;
+
+        }
+
+        .container{
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+
+        }
+
+        .book-card{
+            border: 1px solid gray;
+            padding: 10px;
+            margin:10px;
+            background-color: white;
+        }
+
+        body.dark .book-card{
+            background-color: #444;
+            color: white;
+        }
+
+        .book-details{
+            margin-top:  10px;
+
+        }
+
+        .book-form input{
+            display: block;
+            margin: 5px 0;
+
+        }
+
+        .filter{
+            margin: 20px 0;
+            display: flex;
+            gap: 20px;
+        }
+
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/babel" >
+         const { useState, useEffect } = React;
+         const App = () => {
+             // initiallising the const variables with useState
+            const [books, setBooks] = useState([]);
+            const [filteredBooks, setFilteredBooks] =useState([]);
+            const [theme, setTheme ] = useState('light');
+            const [ newBook, setNewBook] = useState({
+                title : '',
+                author: '',
+                genre:'',
+                synopsis:'',
+                publicationDate:'',
+                coverImage:'',
+            });
+            const [genereFilter, setGenereFilter] = useState('');
+            const [fromDate, setFromDate] = useState('');
+            const [toDate, setToDate] = useState('');
+
+
+            //getting the data
+            useEffect(() => {
+                axios.get('https://books-31bfa-default-rtdb.firebaseio.com/books.json')
+                .then((res) =>{ 
+                    console.log(res.data)
+                    const booksData = Object.keys(res.data).map(key => ({ id: key,...res.data[key]}));
+                    setBooks(booksData);
+                    setFilteredBooks(booksData);
+                })
+                .catch(err => console.log("error in fetching books", err))  
+            },[])
+
+            useEffect(() => {
+                filterBooks();
+            },[books,genereFilter, fromDate,toDate]);
+
+
+            const filterBooks = () => {
+                let filtered = [...books];
+                //filter by genre
+                if(genereFilter){
+                    filtered = filtered.filter(book => book.genre === genereFilter);
+                }
+                //filter by publication Date
+                if(fromDate){
+                    filtered = filtered.filter(book => new Date(book.publicationDate) >= new Date(fromDate));
+                }
+                if(toDate){
+                    filtered = filtered.filter(book => new Date(book.publicationDate) >= new Date(toDate));
+                }
+                setFilteredBooks(filtered);
+            };
+
+            const addBook =()=>{
+                axios.post('https://books-31bfa-default-rtdb.firebaseio.com/books.json', newBook)
+                .then(res => {
+                    setBooks([...books,{id:res.data.name, ...newBook}])
+                    setNewBook({
+                        title : '',
+                        author: '',
+                        genre:'',
+                        synopsis:'',
+                        publicationDate:'',
+                        coverImage:'',
+                    });
+                })
+                .catch(err => console.log('Error in adding the book', err))
+            };
+
+            const toggleTheme =() =>{
+                //loading the theme from localstorage
+                const newTheme = theme === 'light'?'dark':'light';
+                setTheme(newTheme);
+                document.body.className = newTheme;
+                localStorage.setItem('theme',newTheme);
+            };
+
+            useEffect(()=>{
+                const savedTheme = localStorage.getItem('theme');
+                if(savedTheme){
+                    setTheme(savedTheme);
+                    document.body.className = savedTheme;
+                }
+                }, []);
+
+            return(
+                <div className="container">
+                    <h1>Book Management App</h1>
+                    {/*theme section*/}
+                    <button onClick={toggleTheme}>
+                        Switch to {theme === 'light' ? 'Dark' : 'light'}Mode
+                    </button> 
+                    
+
+                    {/*filter section*/}
+                    <div className="filter">
+                        <select value={genereFilter} onChange={e=> setGenereFilter(e.target.value)}>
+                            <option value=""> All Generes</option>
+                            <option value="Fiction">Fiction </option>
+                            <option value="Dystopian">Dystopian </option>
+                            <option value="Romance">Romance </option>
+                        </select>
+                        <input type="date" value={fromDate} onChange={e=> setFromDate(e.target.value)} placeholder="From Date"></input>
+                        <input type="date" value={toDate} onChange={e=> setFromDate(e.target.value)} placeholder="To Date"></input>
+                        <button onClick={filterBooks}>filter</button>
+                    </div>
+
+                    
+                    {/* add new book*/}
+                    <h3>Add New Book</h3>
+                    <div className="book-form">
+                        <input 
+                            value={newBook.title}
+                            onChange={e => setNewBook({...newBook, title : e.target.value})}
+                            placeholder = "Title"
+                        />
+                        <input 
+                            value={newBook.author}
+                            onChange={e => setNewBook({...newBook, author : e.target.value})}
+                            placeholder = "Author"
+
+                        />
+                        <input 
+                            value={newBook.genre}
+                            onChange={e => setNewBook({...newBook, genre : e.target.value})}
+                            placeholder = "Genre"
+                            
+                        />
+                        <input 
+                            value={newBook.synopsis}
+                            onChange={e => setNewBook({...newBook, synopsis : e.target.value})}
+                            placeholder = "Synopsis"
+                            
+                        />
+                        <input 
+                            value={newBook.publicationDate}
+                            onChange={e => setNewBook({...newBook, publicationDate : e.target.value})}
+                            placeholder = "Publication Date"
+                            
+                        />
+                        <input 
+                            value={newBook.coverImage}
+                            onChange={e => setNewBook({...newBook, coverImage : e.target.value})}
+                            placeholder = "CoverImage URL"
+                            
+                        />
+                        <button onClick={addBook}>Add Book</button>
+                    </div>
+
+                    
+                    {/*book section*/}
+                    <div>
+                        {
+                            filteredBooks.map(book => (
+                                <div key={book.id} className="book-card">
+                                    <h3>{book.title}</h3>
+                                    <img src={book.coverImage} alt={book.title} width="100"/>
+                                    <p>Author : {book.author}</p>
+                                    <p>Author : {book.genre}</p>
+                                    <button onClick={()=> 
+                                        window.location.href=`bookdetail.html?${book.id}`
+                                    }>
+                                        Show More
+                                    </button>
+
+                                </div>
+                            ))
+                        }
+                    </div>
+                    
+                    
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<App/>)
+
+        
+    </script>
+  </body>
+</html>

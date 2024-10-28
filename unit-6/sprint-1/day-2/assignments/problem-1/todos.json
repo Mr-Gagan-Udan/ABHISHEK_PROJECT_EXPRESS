@@ -1,0 +1,15 @@
+{
+    "todos": [
+      {
+        "id": 1,
+        "description": "Buy groceries",
+        "status": false
+      },
+      {
+        "id": 2,
+        "description": "Clean the house",
+        "status": false
+      }
+    ]
+  }
+  

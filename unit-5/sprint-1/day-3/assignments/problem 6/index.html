@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multi-Step Feedback Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 2rem;
+      }
+      .form-container {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        max-width: 600px;
+        margin: auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+      .form-group input, .form-group select, .form-group textarea {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .button-group {
+        display: flex;
+        justify-content: space-between;
+      }
+      button {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:disabled {
+        background-color: #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      const { useState } = React;
+
+      function Step1({ formData, updateFormData, nextStep }) {
+        const handleChange = (e) => {
+          const { name, value } = e.target;
+          updateFormData({ ...formData, [name]: value });
+        };
+
+        return (
+          <div className="form-container">
+            <h2>Step 1: General Information</h2>
+            <div className="form-group">
+              <label>Name</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Product Experience Level</label>
+              <select
+                name="experience"
+                value={formData.experience}
+                onChange={handleChange}
+              >
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="expert">Expert</option>
+              </select>
+            </div>
+            <div className="button-group">
+              <button onClick={nextStep}>Next</button>
+            </div>
+          </div>
+        );
+      }
+
+      function Step2({ formData, updateFormData, prevStep, nextStep }) {
+        const [feedbackDetails, setFeedbackDetails] = useState(
+          formData.featureFeedback || { feature: '', satisfaction: 'satisfied', comments: '' }
+        );
+
+        const handleChange = (e) => {
+          const { name, value } = e.target;
+          setFeedbackDetails({ ...feedbackDetails, [name]: value });
+          updateFormData({ ...formData, featureFeedback: feedbackDetails });
+        };
+
+        return (
+          <div className="form-container">
+            <h2>Step 2: Product Feature Feedback</h2>
+            <div className="form-group">
+              <label>Feature Feedback</label>
+              <input
+                type="text"
+                name="feature"
+                value={feedbackDetails.feature}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Are you satisfied?</label>
+              <select
+                name="satisfaction"
+                value={feedbackDetails.satisfaction}
+                onChange={handleChange}
+              >
+                <option value="satisfied">Satisfied</option>
+                <option value="unsatisfied">Unsatisfied</option>
+              </select>
+            </div>
+            {feedbackDetails.satisfaction === 'unsatisfied' && (
+              <div className="form-group">
+                <label>Comments & Suggestions</label>
+                <textarea
+                  name="comments"
+                  value={feedbackDetails.comments}
+                  onChange={handleChange}
+                />
+              </div>
+            )}
+            <div className="button-group">
+              <button onClick={prevStep}>Back</button>
+              <button onClick={nextStep}>Next</button>
+            </div>
+          </div>
+        );
+      }
+
+      function Step3({ formData, prevStep, submitForm }) {
+        return (
+          <div className="form-container">
+            <h2>Step 3: Review and Submit</h2>
+            <p><strong>Name:</strong> {formData.name}</p>
+            <p><strong>Email:</strong> {formData.email}</p>
+            <p><strong>Experience:</strong> {formData.experience}</p>
+            <p><strong>Feature Feedback:</strong> {formData.featureFeedback?.feature}</p>
+            <p><strong>Satisfaction:</strong> {formData.featureFeedback?.satisfaction}</p>
+            {formData.featureFeedback?.satisfaction === 'unsatisfied' && (
+              <p><strong>Comments:</strong> {formData.featureFeedback?.comments}</p>
+            )}
+            <div className="button-group">
+              <button onClick={prevStep}>Back</button>
+              <button onClick={submitForm}>Submit</button>
+            </div>
+          </div>
+        );
+      }
+
+      function FeedbackForm() {
+        const [step, setStep] = useState(1);
+        const [formData, setFormData] = useState({
+          name: '',
+          email: '',
+          experience: 'beginner',
+          featureFeedback: null,
+        });
+
+        const nextStep = () => setStep(step + 1);
+        const prevStep = () => setStep(step - 1);
+
+        const updateFormData = (newData) => setFormData(newData);
+
+        const submitForm = () => {
+          console.log('Submitted Data:', formData);
+          alert('Feedback submitted successfully!');
+          setStep(1);
+          setFormData({
+            name: '',
+            email: '',
+            experience: 'beginner',
+            featureFeedback: null,
+          });
+        };
+
+        switch (step) {
+          case 1:
+            return <Step1 formData={formData} updateFormData={updateFormData} nextStep={nextStep} />;
+          case 2:
+            return <Step2 formData={formData} updateFormData={updateFormData} prevStep={prevStep} nextStep={nextStep} />;
+          case 3:
+            return <Step3 formData={formData} prevStep={prevStep} submitForm={submitForm} />;
+          default:
+            return <div>Error</div>;
+        }
+      }
+
+      ReactDOM.render(<FeedbackForm />, document.getElementById('root'));
+    </script>
+  </body>
+</html>

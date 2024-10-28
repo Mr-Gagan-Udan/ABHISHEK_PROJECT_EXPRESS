@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Pagination</title>
+    <style>
+        #data-container { margin: 20px 0; }
+        #next-btn, #prev-btn { margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Advanced Pagination System</h1>
+    <input type="text" id="search-input" placeholder="Search...">
+    <select id="filter-select">
+        <option value="all">All</option>
+        <option value="category1">Category 1</option>
+        <option value="category2">Category 2</option>
+    </select>
+    <div id="data-container"></div>
+    <button id="prev-btn">Previous</button>
+    <button id="next-btn">Next</button>
+
+    <script>
+        const apiUrl = 'https://jsonplaceholder.typicode.com/posts'; 
+        let currentPage = 1;
+        const pageSize = 10;
+        let isLoading = false;
+
+        function displayData(data) {
+            const container = document.getElementById('data-container');
+            container.innerHTML = data.map(item => `<div>${item.title}</div>`).join('');
+        }
+
+        function fetchPage(page) {
+            return fetch(`${apiUrl}?_page=${page}&_limit=${pageSize}`)
+                .then(response => response.json())
+                .then(data => {
+                    displayData(data);
+                    currentPage = page;
+                });
+        }
+
+        function debounce(func, delay) {
+            let timer;
+            return function(...args) {
+                clearTimeout(timer);
+                timer = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        function throttle(func, limit) {
+            let lastFunc;
+            let lastRan;
+            return function(...args) {
+                const context = this;
+                if (!lastRan) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                } else {
+                    if (lastFunc) clearTimeout(lastFunc);
+                    lastFunc = setTimeout(function() {
+                        if ((Date.now() - lastRan) >= limit) {
+                            func.apply(context, args);
+                            lastRan = Date.now();
+                        }
+                    }, limit - (Date.now() - lastRan));
+                }
+            };
+        }
+
+        const fetchSearchResults = debounce((query) => {
+            fetch(`${apiUrl}?q=${query}`)
+                .then(response => response.json())
+                .then(data => displayData(data));
+        }, 300);
+
+        const fetchFilteredData = (filter) => {
+            fetch(`${apiUrl}?filter=${filter}`)
+                .then(response => response.json())
+                .then(data => displayData(data));
+        };
+
+        const handleScroll = throttle(() => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !isLoading) {
+                isLoading = true;
+                fetchPage(currentPage + 1).then(() => isLoading = false);
+            }
+        }, 200);
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            fetchSearchResults(e.target.value);
+        });
+
+        document.getElementById('filter-select').addEventListener('change', (e) => {
+            fetchFilteredData(e.target.value);
+        });
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            fetchPage(currentPage + 1);
+        });
+
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            fetchPage(currentPage - 1);
+        });
+
+        window.addEventListener('scroll', handleScroll);
+
+        fetchPage(currentPage); 
+    </script>
+</body>
+</html>

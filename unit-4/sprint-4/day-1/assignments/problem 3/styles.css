@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+header {
+    background-color: #6200ea;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header input {
+    padding: 10px;
+    margin-right: 10px;
+    width: 300px;
+}
+
+header button {
+    padding: 10px;
+    background-color: #03dac6;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+#forecastData {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#forecastData .forecastItem {
+    width: 30%;
+    margin: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.dark-theme {
+    background-color: #121212;
+    color: white;
+}
+
+.dark-theme header {
+    background-color: #3700b3;
+}
+
+.dark-theme header button {
+    background-color: #bb86fc;
+}
+
+.dark-theme #forecastData .forecastItem {
+    background-color: #1f1f1f;
+    border-color: #333;
+}

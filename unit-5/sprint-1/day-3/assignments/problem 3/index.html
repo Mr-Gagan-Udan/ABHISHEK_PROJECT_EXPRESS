@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        margin: 0;
+      }
+      .todo-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+      }
+      .todo-container h1 {
+        text-align: center;
+      }
+      .todo-input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .todo-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        margin: 5px 0;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .todo-item.completed {
+        text-decoration: line-through;
+        color: grey;
+      }
+      .filters {
+        display: flex;
+        justify-content: space-around;
+        margin: 10px 0;
+      }
+      .filters button {
+        padding: 5px 10px;
+        border: 1px solid #007bff;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+      .remove-btn {
+        color: red;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      function TodoApp() {
+        const [todos, setTodos] = React.useState([]);
+        const [newTodo, setNewTodo] = React.useState("");
+        const [filter, setFilter] = React.useState("All");
+
+        const addTodo = () => {
+          if (newTodo.trim() === "") return;
+          const newTask = { text: newTodo, completed: false };
+          setTodos([...todos, newTask]);
+          setNewTodo("");
+        };
+
+        const toggleComplete = (index) => {
+          const updatedTodos = todos.map((todo, i) =>
+            i === index ? { ...todo, completed: !todo.completed } : todo
+          );
+          setTodos(updatedTodos);
+        };
+
+        const removeTodo = (index) => {
+          const updatedTodos = todos.filter((_, i) => i !== index);
+          setTodos(updatedTodos);
+        };
+
+        const filteredTodos = todos.filter((todo) => {
+          if (filter === "Active") return !todo.completed;
+          if (filter === "Completed") return todo.completed;
+          return true; // All
+        });
+
+        return (
+          <div className="todo-container">
+            <h1>Todo List</h1>
+
+            <input
+              type="text"
+              className="todo-input"
+              value={newTodo}
+              placeholder="Enter a new task"
+              onChange={(e) => setNewTodo(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && addTodo()}
+            />
+            <button onClick={addTodo} className="submit-btn">
+              Add Task
+            </button>
+
+            {filteredTodos.map((todo, index) => (
+              <div key={index} className={`todo-item ${todo.completed ? "completed" : ""}`}>
+                <span onClick={() => toggleComplete(index)}>{todo.text}</span>
+                <span className="remove-btn" onClick={() => removeTodo(index)}>
+                  &times;
+                </span>
+              </div>
+            ))}
+
+            <div className="filters">
+              <button onClick={() => setFilter("All")}>All</button>
+              <button onClick={() => setFilter("Active")}>Active</button>
+              <button onClick={() => setFilter("Completed")}>Completed</button>
+            </div>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<TodoApp />);
+    </script>
+  </body>
+</html>

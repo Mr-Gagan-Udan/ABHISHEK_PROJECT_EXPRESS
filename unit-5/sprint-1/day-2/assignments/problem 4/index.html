@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zerodha About Us Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 50px;
+            background-color: #fff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header img {
+            width: 120px;
+        }
+        .nav a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .nav a:hover {
+            color: #007bff;
+        }
+        .intro {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #fff;
+        }
+        .intro h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .intro p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+        .main-description {
+            padding: 50px 100px;
+            background-color: #fff;
+        }
+        .main-description p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #444;
+        }
+        .team-section {
+            padding: 50px 20px;
+            text-align: center;
+            background-color: #fff;
+        }
+        .team-section h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+        .team-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .team-member {
+            text-align: center;
+            margin: 20px;
+        }
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .team-member h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        .team-member p {
+            font-size: 1rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      function Header() {
+        return (
+          <header className="header">
+            <img src="https://zerodha.com/static/images/logo.svg" alt="Zerodha Logo" />
+            <nav className="nav">
+              <a href="#">Signup</a>
+              <a href="#">About</a>
+              <a href="#">Products</a>
+              <a href="#">Pricing</a>
+              <a href="#">Support</a>
+            </nav>
+          </header>
+        );
+      }
+
+      function Introduction() {
+        return (
+          <section className="intro">
+            <h1>We pioneered the discount broking model in India.</h1>
+            <p>Now, we are breaking ground with our technology.</p>
+          </section>
+        );
+      }
+      function MainDescription() {
+        return (
+          <section className="main-description">
+            <p>
+              We kick-started operations on the 15th of August, 2010 with the goal of breaking all barriers 
+              that traders and investors face in India in terms of cost, support, and technology. We named the 
+              company Zerodha, a combination of Zero and “Rodha”; the Sanskrit word for barrier.
+            </p>
+            <p>
+              Today, our disruptive pricing models and in-house technology have made us the biggest stock 
+              broker in India. Over 1+ Crore clients place millions of orders every day through our powerful 
+              ecosystem of investment platforms, contributing over 15% of all Indian retail trading volumes.
+            </p>
+            <p>
+              In addition, we run a number of popular open online educational and community initiatives to 
+              empower retail traders and investors. Rainmatter, our fintech fund and incubator, has invested 
+              in several fintech startups with the goal of growing the Indian capital markets.
+            </p>
+          </section>
+        );
+      }
+      function TeamMember({ name, role, imgSrc }) {
+        return (
+          <div className="team-member">
+            <img src={imgSrc} alt={`${name}'s photo`} />
+            <h3>{name}</h3>
+            <p>{role}</p>
+          </div>
+        );
+      }
+      function Team() {
+        const teamMembers = [
+          { name: 'Nithin Kamath', role: 'Founder, CEO', imgSrc: 'https://zerodha.com/static/images/team/nithin.png' },
+          { name: 'Nikhil Kamath', role: 'Co-founder & CFO', imgSrc: 'https://zerodha.com/static/images/team/nikhil.png' },
+          { name: 'Dr. Kailash Nadh', role: 'CTO', imgSrc: 'https://zerodha.com/static/images/team/kailash.png' },
+          { name: 'Venu Madhav', role: 'COO', imgSrc: 'https://zerodha.com/static/images/team/venu.png' },
+          { name: 'Hanan Delvi', role: 'CCO', imgSrc: 'https://zerodha.com/static/images/team/hanan.png' },
+          { name: 'Seema Patil', role: 'Director', imgSrc: 'https://zerodha.com/static/images/team/seema.png' },
+          { name: 'Austin Prakesh', role: 'Director Strategy', imgSrc: 'https://zerodha.com/static/images/team/austin.png' },
+        ];
+
+        return (
+          <section className="team-section">
+            <h2>People</h2>
+            <div className="team-grid">
+              {teamMembers.map((member) => (
+                <TeamMember
+                  key={member.name}
+                  name={member.name}
+                  role={member.role}
+                  imgSrc={member.imgSrc}
+                />
+              ))}
+            </div>
+          </section>
+        );
+      }
+
+      function App() {
+        return (
+          <div>
+            <Header />
+            <Introduction />
+            <MainDescription />
+            <Team />
+          </div>
+        );
+      }
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>book details</title>
+    <style>
+        .imag{
+            height: 50%;
+
+        }
+        
+
+    </style>
+</head>
+<body>
+    <h1>detail</h1>
+    <div id="book_container">
+
+    </div>
+    
+</body>
+</html>
+<script>
+    let url =window.location.search
+    let id =url.split('?')[1]
+
+    fetch(`https://books-31bfa-default-rtdb.firebaseio.com/books/${id}.json`)
+    .then(res => res.json())
+    .then(data => displaybook(data))
+    .catch(err => console.log(err))
+
+
+    function displaybook(book){
+        let container = document.getElementById("book_container")
+
+        let title = document.createElement('p')
+        title.textContent = book.title
+
+        let image = document.createElement('img')
+        image.src = book.coverImage
+        image.className = "imag"
+
+        let genre = document.createElement('p')
+        genre.textContent = book.genre
+
+        let synopsis = document.createElement('p')
+        synopsis.textContent = book.synopsis
+
+
+        container.append(title,image,genre,synopsis)
+    }
+
+</script>

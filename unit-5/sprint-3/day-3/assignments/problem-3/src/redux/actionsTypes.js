@@ -1,0 +1,7 @@
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGOUT = 'LOGOUT';
+export const FETCH_QUIZ_SUCCESS = 'FETCH_QUIZ_SUCCESS';
+export const SET_ANSWER = 'SET_ANSWER';
+export const SUBMIT_QUIZ = 'SUBMIT_QUIZ';
+export const SKIP_QUESTION = 'SKIP_QUESTION';
+export const QUIZ_COMPLETED = 'QUIZ_COMPLETED';

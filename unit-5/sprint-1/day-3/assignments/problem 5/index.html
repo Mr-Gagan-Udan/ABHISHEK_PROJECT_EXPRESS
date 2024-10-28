@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        margin: 0;
+      }
+      .quiz-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+      }
+      .quiz-container h1 {
+        text-align: center;
+      }
+      .question {
+        margin-bottom: 15px;
+      }
+      .options {
+        list-style-type: none;
+        padding: 0;
+      }
+      .options li {
+        margin-bottom: 10px;
+      }
+      .submit-button, .restart-button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .restart-button {
+        background-color: #28a745;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      function Quiz() {
+        const questions = [
+          {
+            question: "What is the capital of France?",
+            options: ["Paris", "London", "Berlin", "Madrid"],
+            answer: "Paris",
+          },
+          {
+            question: "Which is the largest planet in our solar system?",
+            options: ["Earth", "Mars", "Jupiter", "Saturn"],
+            answer: "Jupiter",
+          },
+          {
+            question: "What is the chemical symbol for water?",
+            options: ["O2", "H2O", "CO2", "N2"],
+            answer: "H2O",
+          },
+        ];
+
+        const [selectedAnswers, setSelectedAnswers] = React.useState({});
+        const [score, setScore] = React.useState(null);
+
+        const handleAnswerChange = (questionIndex, option) => {
+          setSelectedAnswers((prev) => ({
+            ...prev,
+            [questionIndex]: option,
+          }));
+        };
+
+        const handleSubmit = () => {
+          let newScore = 0;
+          questions.forEach((question, index) => {
+            if (selectedAnswers[index] === question.answer) {
+              newScore += 1;
+            }
+          });
+          setScore(newScore);
+        };
+
+        const handleRestart = () => {
+          setSelectedAnswers({});
+          setScore(null);
+        };
+
+        return (
+          <div className="quiz-container">
+            <h1>Quiz</h1>
+
+            {score === null ? (
+              <div>
+                {questions.map((question, index) => (
+                  <div key={index} className="question">
+                    <h3>{question.question}</h3>
+                    <ul className="options">
+                      {question.options.map((option, i) => (
+                        <li key={i}>
+                          <label>
+                            <input
+                              type="radio"
+                              name={`question-${index}`}
+                              value={option}
+                              checked={selectedAnswers[index] === option}
+                              onChange={() => handleAnswerChange(index, option)}
+                            />
+                            {option}
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+                <button className="submit-button" onClick={handleSubmit}>
+                  Submit
+                </button>
+              </div>
+            ) : (
+              <div>
+                <h2>Your Score: {score} / {questions.length}</h2>
+                <button className="restart-button" onClick={handleRestart}>
+                  Restart Quiz
+                </button>
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<Quiz />);
+    </script>
+  </body>
+</html>

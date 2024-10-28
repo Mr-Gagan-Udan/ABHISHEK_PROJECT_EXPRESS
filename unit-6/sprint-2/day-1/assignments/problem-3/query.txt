@@ -1,0 +1,18 @@
+All users whose gender is male:  db.collectionName.find({ gender: "male" });
+
+Users whose age is even:  db.collectionName.find({ age: { $mod: [2, 0] } });
+
+Users who currently live in Japan: db.collectionName.find({ currentLocation: "Japan" });
+
+Users who are female and live in India: db.collectionName.find({ gender: "female", currentLocation: "India" });
+
+Users who are more than 25 years old: db.collectionName.find({ age: { $gt: 25 } });
+
+Users who are less than 50 years old and live in the United States: db.collectionName.find({ age: { $lt: 50 }, currentLocation: "United States" });
+
+Total number of users who want to relocate to France (count only): db.collectionName.countDocuments({ relocateTo: "France" });
+
+Total number of users who are from the USA and want to relocate to Russia, sorted by age in ascending order: db.collectionName.find({ currentLocation: "USA", relocateTo: "Russia" }).sort({ age: 1 });
+
+Get all users, sorted by total number of family members (ascending) and age (descending): db.collectionName.find({}).sort({ familyMembers: 1, age: -1 });
+

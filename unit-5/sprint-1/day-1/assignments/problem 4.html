@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JSX and Babel</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      const SubscribeForm = () => {
+        return (
+          <>
+            <div style={styles.container}>
+              <div style={styles.iconContainer}>
+                <img
+                  src="https://www.shutterstock.com/image-vector/new-message-vector-icon-inbox-260nw-1150058318.jpg"
+                  alt="Envelope icon"
+                  style={styles.icon}
+                />
+              </div>
+
+              <h2 style={styles.title}>SUBSCRIBE</h2>
+              <p style={styles.subtitle}>
+                Subscribe to our newsletter & stay up to date!
+              </p>
+
+              <div style={styles.inputContainer}>
+                <input
+                  type="email"
+                  placeholder="john@doe.net"
+                  style={styles.input}
+                />
+                <button style={styles.button}>Subscribe</button>
+              </div>
+            </div>
+          </>
+        );
+      };
+
+      const styles = {
+        container: {
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          backgroundColor: "#f9fafb",
+          padding: "30px",
+          borderRadius: "12px",
+          boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+          width: "400px",
+          margin: "20px auto",
+          textAlign: "center",
+        },
+        iconContainer: {
+          marginBottom: "20px",
+        },
+        icon: {
+          width: "60px",
+          height: "60px",
+        },
+        title: {
+          fontSize: "24px",
+          fontWeight: "bold",
+          marginBottom: "10px",
+        },
+        subtitle: {
+          fontSize: "16px",
+          color: "#6b7280",
+          marginBottom: "20px",
+        },
+        inputContainer: {
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+        },
+        input: {
+          padding: "10px",
+          border: "1px solid #d1d5db",
+          borderRadius: "8px",
+          width: "75%",
+          marginRight: "10px",
+          fontSize: "16px",
+          backgroundColor: "#f3f4f6",
+          outline: "none",
+        },
+        button: {
+          padding: "10px 20px",
+          backgroundColor: "#3b82f6",
+          color: "white",
+          borderRadius: "8px",
+          border: "none",
+          cursor: "pointer",
+          fontSize: "16px",
+        },
+      };
+
+    </script>
+  </body>
+</html>

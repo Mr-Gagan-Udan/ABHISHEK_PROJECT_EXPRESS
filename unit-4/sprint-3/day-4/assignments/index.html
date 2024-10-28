@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paginated User Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .user-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .user-card {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px;
+            width: 250px;
+            border-radius: 8px;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="user-container" id="user-container"></div>
+    <div class="pagination" id="pagination"></div>
+
+    <script>
+        const API_URL = 'https://jsonplaceholder.typicode.com/users';
+        const USERS_PER_PAGE = 6;
+        let currentPage = 1;
+        
+        // Fetch user data with pagination
+        async function fetchUsers(page) {
+            try {
+                const response = await fetch(`${API_URL}?_page=${page}&_limit=${USERS_PER_PAGE}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch data: ${response.statusText}`);
+                }
+                const data = await response.json();
+                renderUsers(data);
+            } catch (error) {
+                document.getElementById('user-container').innerHTML = `<p>Error: ${error.message}</p>`;
+            }
+        }
+
+        // Render user data to the DOM
+        function renderUsers(users) {
+            const userContainer = document.getElementById('user-container');
+            userContainer.innerHTML = '';
+            users.forEach(user => {
+                const userCard = document.createElement('div');
+                userCard.className = 'user-card';
+                userCard.innerHTML = `
+                    <h3>${user.name}</h3>
+                    <p><strong>Email:</strong> ${user.email}</p>
+                    <p><strong>Address:</strong> ${user.address.street}, ${user.address.city}</p>
+                `;
+                userContainer.appendChild(userCard);
+            });
+        }
+
+        // Render pagination buttons
+        function renderPagination(totalUsers) {
+            const paginationContainer = document.getElementById('pagination');
+            paginationContainer.innerHTML = '';
+            const totalPages = Math.ceil(totalUsers / USERS_PER_PAGE);
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.innerText = i;
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    fetchUsers(currentPage);
+                });
+                paginationContainer.appendChild(pageButton);
+            }
+        }
+
+        // Initialize the app
+        async function init() {
+            try {
+                const response = await fetch(API_URL);
+                const totalUsers = parseInt(response.headers.get('x-total-count'));
+                renderPagination(totalUsers);
+                fetchUsers(currentPage);
+            } catch (error) {
+                document.getElementById('user-container').innerHTML = `<p>Error: ${error.message}</p>`;
+            }
+        }
+
+        // Start the app
+        init();
+
+    </script>
+
+</body>
+</html>

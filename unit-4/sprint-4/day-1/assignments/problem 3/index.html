@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Weather Dashboard</h1>
+        <div>
+            <input type="text" id="searchInput" placeholder="Search for a city...">
+            <button id="searchButton">Search</button>
+            <button id="toggleTheme">Toggle Theme</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="currentWeather">
+            <!-- Current weather will be displayed here -->
+        </section>
+
+        <section id="forecast">
+            <h2>30-Day Weather Forecast</h2>
+            <div id="forecastControls">
+                <button id="toggleView">Toggle Pagination/Infinite Scrolling</button>
+                <div id="pagination">
+                    <!-- Pagination controls will be here -->
+                </div>
+            </div>
+            <div id="forecastData">
+                <!-- Weather forecast will be displayed here -->
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

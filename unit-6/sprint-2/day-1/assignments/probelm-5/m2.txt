@@ -1,0 +1,126 @@
+With Mongo query to retrieve documents from the orders in ascending order by total.
+db.orders.find({}).sort({ total: 1 });
+
+
+Write Mongo query to retrieve the oldest payment Method from the payments collection as "id"
+db.payments.find({}, { paymentMethod: 1 }).sort({ date: 1 }).limit(1);
+
+
+
+Wiste Mango query to retrieve 2nd and 3rd buyers from the buyers collection.
+db.buyers.find({}).skip(1).limit(2);
+
+
+Write Morigo query to retrieve the most Expensive product from order details.
+db.orderDetails.find({}).sort({ price: -1 }).limit(1);
+
+
+Write Mongo query to retrieve the first order from the orders as per the order date
+db.orders.find({}).sort({ orderDate: 1 }).limit(1);
+
+
+Write Mongo query to retrieve the last 3 orders from the orders collection who have less total amount
+db.orders.find({}).sort({ total: 1 }).limit(3);
+
+
+Write Mongo query to retrieve the most recent shipped order from the orders collection,
+db.orders.find({ status: "Shipped" }).sort({ shippedDate: -1 }).limit(1);
+
+
+
+Write Monga query to get the total revenue from all orders
+db.orders.aggregate([
+  { $group: { _id: null, totalRevenue: { $sum: "$total" } } }
+]);
+
+
+Write Mango query to retrieve all the onders that shipped before 2022-05-26
+db.orders.find({ shippedDate: { $lt: new ISODate("2022-05-26") } });
+
+
+Write Mongo query to find the maxirttum price as maxPrice of products and their names as name for each category
+db.products.aggregate([
+  { $group: { _id: "$category", maxPrice: { $max: "$price" }, name: { $first: "$name" } } }
+]);
+
+
+Write Mongo query to find Most used payment Method as payment Method and the number of time it is used at count,
+db.payments.aggregate([
+  { $group: { _id: "$paymentMethod", count: { $sum: 1 } } },
+  { $sort: { count: -1 } },
+  { $limit: 1 }
+]);
+
+
+Write Mongo query to find the total count of orders by status
+db.orders.aggregate([
+  { $group: { _id: "$status", count: { $sum: 1 } } }
+]);
+
+
+Write Mongo quen to retrieve the orders grouped by customer id with the max total
+db.orders.aggregate([
+  { $group: { _id: "$customerId", maxTotal: { $max: "$total" } } }
+]);
+
+
+Assess the impact of RAM capacity on laptop prices and ratings Group laptops by RAM capacity arid analyze the average price arid sating for each group. Identily any significant trends, or outliers
+SELECT 
+    RAM_Capacity, 
+    AVG(Price) AS Avg_Price, 
+    AVG(Rating) AS Avg_Rating
+FROM 
+    Laptops
+GROUP BY 
+    RAM_Capacity
+ORDER BY 
+    RAM_Capacity ASC;
+
+
+Investigate the price and rating distribution for gaming laptops, Identify which brands are leading in the gaming laptop market by Camparing the average price rating GPU type, and RAM capacity for laptepe categorized as gaming
+SELECT 
+    Brand, 
+    AVG(Price) AS Avg_Price, 
+    AVG(Rating) AS Avg_Rating, 
+    GPU_Type, 
+    AVG(RAM_Capacity) AS Avg_RAM
+FROM 
+    Laptops
+WHERE 
+    Category = 'Gaming'
+GROUP BY 
+    Brand, GPU_Type
+ORDER BY 
+    Avg_Rating DESC;
+
+
+
+Analyze the warranty periods offered by different brands and their correlation with laptop prices and ratings, identify any patterns or insights regarding how warranty periods influence consumer.ratings and pricing strategies
+SELECT 
+    Brand, 
+    Warranty_Period, 
+    AVG(Price) AS Avg_Price, 
+    AVG(Rating) AS Avg_Rating
+FROM 
+    Laptops
+GROUP BY 
+    Brand, Warranty_Period
+ORDER BY 
+    Warranty_Period ASC;
+
+
+	
+Examine the relationship between processor brand (Intel, AMD, Apple) and laptop price, rating, and primary storage capacity. Group the laptops by processor brand and compere thee average price rating and storage statistics to identify key differences
+SELECT 
+    Processor_Brand, 
+    AVG(Price) AS Avg_Price, 
+    AVG(Rating) AS Avg_Rating, 
+    AVG(Storage_Capacity) AS Avg_Storage
+FROM 
+    Laptops
+GROUP BY 
+    Processor_Brand
+ORDER BY 
+    Avg_Price DESC;
+
+

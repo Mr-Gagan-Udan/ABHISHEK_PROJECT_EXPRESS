@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDo List</title>
+    <style>
+      /* Basic styling for the To-Do List */
+      .todo-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 2px solid #333;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+      li.completed {
+        text-decoration: line-through;
+        color: #999;
+      }
+      .todo-form {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+      input[type="text"] {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button.delete {
+        background-color: #dc3545;
+      }
+      button:hover {
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      const ToDoList = () => {
+        const [todos, setTodos] = React.useState([]); // Manage the list of todos
+        const [newTodo, setNewTodo] = React.useState(''); // Manage input for new todo
+
+        // Add new todo item
+        const addTodo = (e) => {
+          e.preventDefault();
+          if (newTodo.trim()) {
+            setTodos([...todos, { text: newTodo, completed: false }]);
+            setNewTodo(''); // Clear input field
+          }
+        };
+
+        // Delete todo item
+        const deleteTodo = (index) => {
+          const newTodos = todos.filter((_, i) => i !== index);
+          setTodos(newTodos);
+        };
+
+        // Mark todo item as completed
+        const toggleComplete = (index) => {
+          const newTodos = [...todos];
+          newTodos[index].completed = !newTodos[index].completed;
+          setTodos(newTodos);
+        };
+
+        return (
+          <div className="todo-container">
+            <h1>To-Do List</h1>
+
+            {/* Input form to add new ToDo items */}
+            <form className="todo-form" onSubmit={addTodo}>
+              <input
+                type="text"
+                value={newTodo}
+                onChange={(e) => setNewTodo(e.target.value)}
+                placeholder="Enter a new task"
+              />
+              <button type="submit">Add</button>
+            </form>
+
+            {/* Render the list of ToDo items */}
+            <ul>
+              {todos.map((todo, index) => (
+                <li key={index} className={todo.completed ? 'completed' : ''}>
+                  <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={() => toggleComplete(index)}
+                  />
+                  <span>{todo.text}</span>
+                  <button className="delete" onClick={() => deleteTodo(index)}>
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      };
+
+      ReactDOM.render(<ToDoList />, document.getElementById('root'));
+    </script>
+  </body>
+</html>

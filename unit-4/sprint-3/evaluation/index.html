@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>folder</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+</body>
+    <h1>Home Page</h1>
+
+    <select name="categories" id="category" onchange="filter()">
+        <option value="category">select category</option>
+        <option value=".txt">txt</option>
+        <option value=".pdf">pdf</option>
+        <option value=".mp3">mp3</option>
+        <option value=".exe">exe</option>
+        <option value=".rar">rar</option>
+        <option value=".docx">docx</option>
+        <option value=".jpg">jpg</option>
+        <option value=".png">png</option>
+        <option value=".gif">gif</option>
+        <option value=".zip">zip</option>
+
+    </select>
+    <input type="text " id="search" placeholder="Serach Folder eg=.pdf " onchange="search()">
+    <button onclick="search()" id="ebtn">search</button>
+    <div id="container">
+        
+
+    </div>
+    
+</body>
+</html>
+<script src="./script.js">
+
+</script>
